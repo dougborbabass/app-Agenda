@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/activity_form_aluno_nome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:hint="Nome"
+        android:inputType="textCapWords" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/activity_form_aluno_telefone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:hint="Telefone"
+        android:inputType="phone" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/activity_form_aluno_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+
+        android:hint="Email" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/activity_form_aluno_btn_salvar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:hint="Salvar"
+        android:inputType="textEmailAddress" />
+
+</LinearLayout>
