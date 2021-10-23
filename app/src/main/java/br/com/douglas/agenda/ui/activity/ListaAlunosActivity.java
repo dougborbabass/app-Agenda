@@ -38,10 +38,12 @@ public class ListaAlunosActivity extends AppCompatActivity {
         configuraFabNovoAluno();
         configuraLista();
 
-        alunoDAO.salva(new Aluno("Fran", "123456", "gmail@gmail"));
-        alunoDAO.salva(new Aluno("Marta", "9879874", "gmail@gmail"));
-        alunoDAO.salva(new Aluno("Fabio", "3210984", "gmail@gmail"));
-        alunoDAO.salva(new Aluno("Dagoberto", "687120", "gmail@gmail"));
+        for (int i = 0; i < 5; i++) {
+            alunoDAO.salva(new Aluno("Fran", "123456", "gmail@gmail"));
+            alunoDAO.salva(new Aluno("Marta", "9879874", "gmail@gmail"));
+            alunoDAO.salva(new Aluno("Fabio", "3210984", "gmail@gmail"));
+            alunoDAO.salva(new Aluno("Dagoberto", "687120", "gmail@gmail"));
+        }
     }
 
     @Override
