@@ -13,20 +13,28 @@ public class AlunoDAO {
     public void salva(Aluno aluno) {
         aluno.setId(contadorDeIds);
         alunos.add(aluno);
-        contadorDeIds++;
+        atualizaIds();
+    }
+
+    private int atualizaIds() {
+        return contadorDeIds++;
     }
 
     public void edita(Aluno aluno) {
-        Aluno alunoEncontrado = null;
-        for (Aluno a : alunos) {
-            if (a.getId() == aluno.getId()) {
-                alunoEncontrado = a;
-            }
-        }
+        Aluno alunoEncontrado = buscaAlunoPeloId(aluno);
         if (alunoEncontrado != null) {
             int posicaoDoAluno = alunos.indexOf(alunoEncontrado);
             alunos.set(posicaoDoAluno, aluno);
         }
+    }
+
+    private Aluno buscaAlunoPeloId(Aluno aluno) {
+        for (Aluno a : alunos) {
+            if (a.getId() == aluno.getId()) {
+                return a;
+            }
+        }
+        return null;
     }
 
     public List<Aluno> todos() {

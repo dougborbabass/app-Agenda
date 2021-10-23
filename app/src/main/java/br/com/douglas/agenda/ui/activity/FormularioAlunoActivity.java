@@ -4,16 +4,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import br.com.douglas.agenda.R;
 import br.com.douglas.agenda.dao.AlunoDAO;
 import br.com.douglas.agenda.model.Aluno;
 
+import static br.com.douglas.agenda.ui.activity.ConstantesActivities.CHAVE_ALUNO;
+
 public class FormularioAlunoActivity extends AppCompatActivity {
 
-    public static final String TITULO_APPBAR = "Novo aluno";
+    private static final String TITULO_APPBAR_NOVO_ALUNO = "Novo aluno";
+    private static final String TITULO_APPBAR_EDITA_ALUNO = "Edita aluno";
+
     EditText campoNome;
     EditText campoTelefone;
     EditText campoEmail;
@@ -24,22 +26,10 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_aluno);
 
-        setTitle(TITULO_APPBAR);
-
         AlunoDAO alunoDAO = new AlunoDAO();
         bindCampos();
         configuraBtnSalvar(alunoDAO);
-
-        Intent dados = getIntent();
-
-        if (dados.hasExtra("aluno")) {
-            aluno = (Aluno) dados.getSerializableExtra("aluno");
-            campoNome.setText(aluno.getNome());
-            campoTelefone.setText(aluno.getTelefone());
-            campoEmail.setText(aluno.getEmail());
-        } else {
-            aluno = new Aluno();
-        }
+        carregaInfosAluno();
     }
 
     private void bindCampos() {
@@ -51,17 +41,27 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     private void configuraBtnSalvar(AlunoDAO alunoDAO) {
         Button btnSalvar = findViewById(R.id.activity_form_aluno_btn_salvar);
         btnSalvar.setOnClickListener(view -> {
-//            Aluno alunoCriado = criaAluno(campoNome, campoTelefone, campoEmail);
-//            salva(alunoDAO, alunoCriado);
             preencheAluno();
-
-            if (aluno.temIdValido()) {
-                alunoDAO.edita(aluno);
-            } else {
-                alunoDAO.salva(aluno);
-            }
-            finish();
+            finalizaFormulario(alunoDAO);
         });
+    }
+
+    private void carregaInfosAluno() {
+        Intent dados = getIntent();
+        if (dados.hasExtra(CHAVE_ALUNO)) {
+            setTitle(TITULO_APPBAR_EDITA_ALUNO);
+            aluno = (Aluno) dados.getSerializableExtra(CHAVE_ALUNO);
+            preencheCampos();
+        } else {
+            setTitle(TITULO_APPBAR_NOVO_ALUNO);
+            aluno = new Aluno();
+        }
+    }
+
+    private void preencheCampos() {
+        campoNome.setText(aluno.getNome());
+        campoTelefone.setText(aluno.getTelefone());
+        campoEmail.setText(aluno.getEmail());
     }
 
     private void preencheAluno() {
@@ -72,5 +72,14 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         aluno.setNome(nome);
         aluno.setTelefone(telefone);
         aluno.setEmail(email);
+    }
+
+    private void finalizaFormulario(AlunoDAO alunoDAO) {
+        if (aluno.temIdValido()) {
+            alunoDAO.edita(aluno);
+        } else {
+            alunoDAO.salva(aluno);
+        }
+        finish();
     }
 }
