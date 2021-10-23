@@ -10,8 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.List;
-
 import br.com.douglas.agenda.R;
 import br.com.douglas.agenda.dao.AlunoDAO;
 import br.com.douglas.agenda.model.Aluno;
@@ -31,7 +29,9 @@ public class ListaAlunosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setTitle(TITULO_APPBAR);
+
         configuraFabNovoAluno();
+        configuraLista();
 
         alunoDAO.salva(new Aluno("Fran", "123456", "gmail@gmail"));
         alunoDAO.salva(new Aluno("Marta", "9879874", "gmail@gmail"));
@@ -51,22 +51,32 @@ public class ListaAlunosActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        configuraLista();
+        atualizaAlunos();
+    }
+
+    private void atualizaAlunos() {
+        adapter.clear();
+        adapter.addAll(alunoDAO.todos());
     }
 
     private void configuraLista() {
         ListView listaDeAlunosListView = findViewById(R.id.listView_alunos);
-        List<Aluno> todosAlunos = alunoDAO.todos();
-
-        configuraAdapter(listaDeAlunosListView, todosAlunos);
+        configuraAdapter(listaDeAlunosListView);
         configuraListenerDeCliquePorItem(listaDeAlunosListView);
+        configuraListenerDeCliqueLongoPorItem(listaDeAlunosListView);
+    }
 
+    private void configuraListenerDeCliqueLongoPorItem(ListView listaDeAlunosListView) {
         listaDeAlunosListView.setOnItemLongClickListener((adapterView, view, position, id) -> {
             Aluno alunoEscolhido = (Aluno) adapterView.getItemAtPosition(position);
-            alunoDAO.remove(alunoEscolhido);
-            adapter.remove(alunoEscolhido);
+            remove(alunoEscolhido);
             return true;
         });
+    }
+
+    private void remove(Aluno aluno) {
+        alunoDAO.remove(aluno);
+        adapter.remove(aluno);
     }
 
     private void configuraListenerDeCliquePorItem(ListView listaDeAlunos) {
@@ -82,11 +92,10 @@ public class ListaAlunosActivity extends AppCompatActivity {
         startActivity(vaiParaFormulario);
     }
 
-    private void configuraAdapter(ListView listaDeAlunos, List<Aluno> todosAlunos) {
+    private void configuraAdapter(ListView listaDeAlunos) {
         adapter = new ArrayAdapter<>(
                 this,
-                android.R.layout.simple_list_item_1,
-                todosAlunos);
+                android.R.layout.simple_list_item_1);
         listaDeAlunos.setAdapter(adapter);
     }
 }
