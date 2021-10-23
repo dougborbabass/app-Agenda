@@ -7,8 +7,6 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.Serializable;
-
 import br.com.douglas.agenda.R;
 import br.com.douglas.agenda.dao.AlunoDAO;
 import br.com.douglas.agenda.model.Aluno;
@@ -33,11 +31,15 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         configuraBtnSalvar(alunoDAO);
 
         Intent dados = getIntent();
-        aluno = (Aluno) dados.getSerializableExtra("aluno");
 
-        campoNome.setText(aluno.getNome());
-        campoTelefone.setText(aluno.getTelefone());
-        campoEmail.setText(aluno.getEmail());
+        if (dados.hasExtra("aluno")) {
+            aluno = (Aluno) dados.getSerializableExtra("aluno");
+            campoNome.setText(aluno.getNome());
+            campoTelefone.setText(aluno.getTelefone());
+            campoEmail.setText(aluno.getEmail());
+        } else {
+            aluno = new Aluno();
+        }
     }
 
     private void bindCampos() {
@@ -52,7 +54,12 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 //            Aluno alunoCriado = criaAluno(campoNome, campoTelefone, campoEmail);
 //            salva(alunoDAO, alunoCriado);
             preencheAluno();
-            alunoDAO.edita(aluno);
+
+            if (aluno.temIdValido()) {
+                alunoDAO.edita(aluno);
+            } else {
+                alunoDAO.salva(aluno);
+            }
             finish();
         });
     }
@@ -65,10 +72,5 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         aluno.setNome(nome);
         aluno.setTelefone(telefone);
         aluno.setEmail(email);
-    }
-
-    private void salva(AlunoDAO alunoDAO, Aluno alunoCriado) {
-        alunoDAO.salva(alunoCriado);
-        finish();
     }
 }
