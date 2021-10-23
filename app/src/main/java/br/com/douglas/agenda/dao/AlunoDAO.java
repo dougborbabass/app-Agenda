@@ -28,6 +28,13 @@ public class AlunoDAO {
         }
     }
 
+    public void remove(Aluno aluno) {
+        Aluno alunoDevolvido = buscaAlunoPeloId(aluno);
+        if (alunoDevolvido != null) {
+            alunos.remove(alunoDevolvido);
+        }
+    }
+
     private Aluno buscaAlunoPeloId(Aluno aluno) {
         for (Aluno a : alunos) {
             if (a.getId() == aluno.getId()) {
