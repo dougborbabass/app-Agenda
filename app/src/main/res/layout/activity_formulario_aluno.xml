@@ -30,16 +30,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-
+            android:inputType="textEmailAddress"
             android:hint="Email" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/activity_form_aluno_btn_salvar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:hint="Salvar"
-            android:inputType="textEmailAddress" />
 
     </LinearLayout>
 </ScrollView>

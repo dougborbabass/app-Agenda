@@ -2,8 +2,12 @@ package br.com.douglas.agenda.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import br.com.douglas.agenda.R;
 import br.com.douglas.agenda.dao.AlunoDAO;
@@ -20,30 +24,35 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     EditText campoTelefone;
     EditText campoEmail;
     private Aluno aluno;
+    private final AlunoDAO alunoDAO = new AlunoDAO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_aluno);
 
-        AlunoDAO alunoDAO = new AlunoDAO();
         bindCampos();
-        configuraBtnSalvar(alunoDAO);
         carregaInfosAluno();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_formulario_aluno_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.menu_salvar) {
+            finalizaFormulario();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void bindCampos() {
         campoNome = findViewById(R.id.activity_form_aluno_nome);
         campoTelefone = findViewById(R.id.activity_form_aluno_telefone);
         campoEmail = findViewById(R.id.activity_form_aluno_email);
-    }
-
-    private void configuraBtnSalvar(AlunoDAO alunoDAO) {
-        Button btnSalvar = findViewById(R.id.activity_form_aluno_btn_salvar);
-        btnSalvar.setOnClickListener(view -> {
-            preencheAluno();
-            finalizaFormulario(alunoDAO);
-        });
     }
 
     private void carregaInfosAluno() {
@@ -74,7 +83,8 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         aluno.setEmail(email);
     }
 
-    private void finalizaFormulario(AlunoDAO alunoDAO) {
+    private void finalizaFormulario() {
+        preencheAluno();
         if (aluno.temIdValido()) {
             alunoDAO.edita(aluno);
         } else {
