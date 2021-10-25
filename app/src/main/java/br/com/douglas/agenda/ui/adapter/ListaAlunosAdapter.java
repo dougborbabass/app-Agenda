@@ -1,4 +1,4 @@
-package br.com.douglas.agenda.ui.activity.adapter;
+package br.com.douglas.agenda.ui.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
