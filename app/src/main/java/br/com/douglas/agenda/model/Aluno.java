@@ -1,5 +1,7 @@
 package br.com.douglas.agenda.model;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 
 public class Aluno implements Serializable {
@@ -43,6 +45,7 @@ public class Aluno implements Serializable {
         this.email = email;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return nome;

@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:hint="Nome"
+            android:hint="@string/nome"
             android:inputType="textCapWords" />
 
         <com.google.android.material.textfield.TextInputEditText
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:hint="Telefone"
+            android:hint="@string/telefone"
             android:inputType="phone" />
 
         <com.google.android.material.textfield.TextInputEditText
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:inputType="textEmailAddress"
-            android:hint="Email" />
+            android:hint="@string/email" />
 
     </LinearLayout>
 </ScrollView>

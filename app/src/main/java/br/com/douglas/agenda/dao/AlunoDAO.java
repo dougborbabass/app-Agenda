@@ -16,8 +16,8 @@ public class AlunoDAO {
         atualizaIds();
     }
 
-    private int atualizaIds() {
-        return contadorDeIds++;
+    private void atualizaIds() {
+        contadorDeIds++;
     }
 
     public void edita(Aluno aluno) {

@@ -13,7 +13,7 @@
         android:layout_margin="16dp"
         android:clickable="true"
         android:src="@drawable/ic_action_novo_aluno"
-        android:contentDescription="TODO" />
+        android:contentDescription="@string/add" />
 
     <ListView
         android:id="@+id/listView_alunos"
