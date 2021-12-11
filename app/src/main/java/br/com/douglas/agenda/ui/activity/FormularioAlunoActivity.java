@@ -10,9 +10,12 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.Room;
 
 import br.com.douglas.agenda.R;
 import br.com.douglas.agenda.dao.AlunoDAO;
+import br.com.douglas.agenda.database.AgendaDatabase;
+import br.com.douglas.agenda.database.dao.RoomAlunoDAO;
 import br.com.douglas.agenda.model.Aluno;
 
 public class FormularioAlunoActivity extends AppCompatActivity {
@@ -24,12 +27,16 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     EditText campoTelefone;
     EditText campoEmail;
     private Aluno aluno;
-    private final AlunoDAO alunoDAO = new AlunoDAO();
+    private RoomAlunoDAO alunoDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_aluno);
+
+        AgendaDatabase database = AgendaDatabase.getInstance(this);
+
+        alunoDAO = database.getRoomAlunoDAO();
 
         bindCampos();
         carregaInfosAluno();

@@ -23,10 +23,8 @@ public class ListaAlunosView {
     public ListaAlunosView(Context context) {
         this.context = context;
         this.adapter = new ListaAlunosAdapter(this.context);
-        alunoDAO = Room
-                .databaseBuilder(context, AgendaDatabase.class, "agenda.db")
-                .allowMainThreadQueries()
-                .build()
+        alunoDAO = AgendaDatabase
+                .getInstance(context)
                 .getRoomAlunoDAO();
     }
 
