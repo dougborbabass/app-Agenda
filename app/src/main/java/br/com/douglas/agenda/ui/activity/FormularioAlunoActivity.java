@@ -10,12 +10,10 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
 
 import br.com.douglas.agenda.R;
-import br.com.douglas.agenda.dao.AlunoDAO;
 import br.com.douglas.agenda.database.AgendaDatabase;
-import br.com.douglas.agenda.database.dao.RoomAlunoDAO;
+import br.com.douglas.agenda.database.dao.AlunoDAO;
 import br.com.douglas.agenda.model.Aluno;
 
 public class FormularioAlunoActivity extends AppCompatActivity {
@@ -24,10 +22,11 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     private static final String TITULO_APPBAR_EDITA_ALUNO = "Edita aluno";
 
     EditText campoNome;
+    EditText campoSobreNome;
     EditText campoTelefone;
     EditText campoEmail;
     private Aluno aluno;
-    private RoomAlunoDAO alunoDAO;
+    private AlunoDAO alunoDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +57,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
     private void bindCampos() {
         campoNome = findViewById(R.id.activity_form_aluno_nome);
+        campoSobreNome = findViewById(R.id.activity_form_aluno_sobrenome);
         campoTelefone = findViewById(R.id.activity_form_aluno_telefone);
         campoEmail = findViewById(R.id.activity_form_aluno_email);
     }
@@ -76,16 +76,19 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
     private void preencheCampos() {
         campoNome.setText(aluno.getNome());
+        campoSobreNome.setText(aluno.getSobrenome());
         campoTelefone.setText(aluno.getTelefone());
         campoEmail.setText(aluno.getEmail());
     }
 
     private void preencheAluno() {
         String nome = campoNome.getText().toString();
+        String sobreNome = campoSobreNome.getText().toString();
         String telefone = campoTelefone.getText().toString();
         String email = campoEmail.getText().toString();
 
         aluno.setNome(nome);
+        aluno.setSobrenome(sobreNome);
         aluno.setTelefone(telefone);
         aluno.setEmail(email);
     }

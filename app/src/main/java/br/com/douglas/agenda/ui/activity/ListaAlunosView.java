@@ -6,18 +6,16 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.room.Room;
 
-import br.com.douglas.agenda.dao.AlunoDAO;
 import br.com.douglas.agenda.database.AgendaDatabase;
-import br.com.douglas.agenda.database.dao.RoomAlunoDAO;
+import br.com.douglas.agenda.database.dao.AlunoDAO;
 import br.com.douglas.agenda.model.Aluno;
 import br.com.douglas.agenda.ui.adapter.ListaAlunosAdapter;
 
 public class ListaAlunosView {
 
     private final ListaAlunosAdapter adapter;
-    private final RoomAlunoDAO alunoDAO;
+    private final AlunoDAO alunoDAO;
     private Context context;
 
     public ListaAlunosView(Context context) {
