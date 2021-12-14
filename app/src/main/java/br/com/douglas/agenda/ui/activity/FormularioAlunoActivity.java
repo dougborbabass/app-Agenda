@@ -14,7 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import br.com.douglas.agenda.R;
 import br.com.douglas.agenda.database.AgendaDatabase;
 import br.com.douglas.agenda.database.dao.AlunoDAO;
+import br.com.douglas.agenda.database.dao.TelefoneDAO;
 import br.com.douglas.agenda.model.Aluno;
+import br.com.douglas.agenda.model.Telefone;
+import br.com.douglas.agenda.model.TipoTelefone;
 
 public class FormularioAlunoActivity extends AppCompatActivity {
 
@@ -28,6 +31,8 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     EditText campoEmail;
     private Aluno aluno;
     private AlunoDAO alunoDAO;
+    private TelefoneDAO telefoneDAO;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         AgendaDatabase database = AgendaDatabase.getInstance(this);
 
         alunoDAO = database.getAlunoDAO();
+        telefoneDAO = database.getTelefoneDAO();
 
         bindCampos();
         carregaInfosAluno();
@@ -103,7 +109,16 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         if (aluno.temIdValido()) {
             alunoDAO.edita(aluno);
         } else {
-            alunoDAO.salva(aluno);
+            int alunoId = alunoDAO.salva(aluno).intValue();
+
+            String numeroFixo = campoTelefoneFixo.getText().toString();
+            Telefone telefoneFixo = new Telefone(numeroFixo, TipoTelefone.FIXO, alunoId);
+
+            String numeroCelular = campoTelefoneCelular.getText().toString();
+            Telefone telefoneCelular = new Telefone(numeroCelular, TipoTelefone.CELULAR, alunoId);
+
+            telefoneDAO.salva(telefoneFixo, telefoneCelular);
+
         }
         finish();
     }
