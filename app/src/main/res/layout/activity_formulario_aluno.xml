@@ -26,11 +26,19 @@
             android:inputType="textCapWords" />
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/activity_form_aluno_telefone"
+            android:id="@+id/activity_form_aluno_telefone_fixo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:hint="@string/telefone"
+            android:hint="@string/telefone_fixo"
+            android:inputType="phone" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/activity_form_aluno_telefone_celular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/telefone_celular"
             android:inputType="phone" />
 
         <com.google.android.material.textfield.TextInputEditText

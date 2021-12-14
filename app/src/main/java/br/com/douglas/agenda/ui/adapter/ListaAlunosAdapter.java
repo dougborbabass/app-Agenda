@@ -12,7 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.douglas.agenda.R;
+import br.com.douglas.agenda.database.AgendaDatabase;
+import br.com.douglas.agenda.database.dao.TelefoneDAO;
 import br.com.douglas.agenda.model.Aluno;
+import br.com.douglas.agenda.model.Telefone;
 
 public class ListaAlunosAdapter extends BaseAdapter {
 
@@ -52,7 +55,9 @@ public class ListaAlunosAdapter extends BaseAdapter {
         nome.setText(aluno.getNomeCompleto()); //+ " " + aluno.dataFormatada()
 
         TextView telefone = view.findViewById(R.id.item_aluno_telefone);
-        telefone.setText(aluno.getTelefone());
+        TelefoneDAO telefoneDAO = AgendaDatabase.getInstance(context).getTelefoneDAO();
+        Telefone primeiroTelefone = telefoneDAO.buscaPrimeiroTelefoneDoAluno(aluno.getId());
+        telefone.setText(primeiroTelefone.getNumero());
     }
 
     private View criaView(ViewGroup viewGroup) {

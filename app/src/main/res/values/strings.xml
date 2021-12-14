@@ -7,4 +7,6 @@
     <string name="remover">Remover</string>
     <string name="add">add</string>
     <string name="sobrenome">Sobrenome</string>
+    <string name="telefone_fixo">Telefone fixo</string>
+    <string name="telefone_celular">Telefone Celular</string>
 </resources>

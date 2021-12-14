@@ -23,7 +23,8 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
     EditText campoNome;
     EditText campoSobreNome;
-    EditText campoTelefone;
+    EditText campoTelefoneFixo;
+    EditText campoTelefoneCelular;
     EditText campoEmail;
     private Aluno aluno;
     private AlunoDAO alunoDAO;
@@ -55,13 +56,6 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void bindCampos() {
-        campoNome = findViewById(R.id.activity_form_aluno_nome);
-        campoSobreNome = findViewById(R.id.activity_form_aluno_sobrenome);
-        campoTelefone = findViewById(R.id.activity_form_aluno_telefone);
-        campoEmail = findViewById(R.id.activity_form_aluno_email);
-    }
-
     private void carregaInfosAluno() {
         Intent dados = getIntent();
         if (dados.hasExtra(CHAVE_ALUNO)) {
@@ -74,22 +68,33 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         }
     }
 
+    private void bindCampos() {
+        campoNome = findViewById(R.id.activity_form_aluno_nome);
+        campoSobreNome = findViewById(R.id.activity_form_aluno_sobrenome);
+        campoTelefoneFixo = findViewById(R.id.activity_form_aluno_telefone_fixo);
+        campoTelefoneCelular = findViewById(R.id.activity_form_aluno_telefone_celular);
+        campoEmail = findViewById(R.id.activity_form_aluno_email);
+    }
+
     private void preencheCampos() {
         campoNome.setText(aluno.getNome());
         campoSobreNome.setText(aluno.getSobrenome());
-        campoTelefone.setText(aluno.getTelefone());
+//        campoTelefoneFixo.setText(aluno.getTelefoneFixo());
+//        campoTelefoneCelular.setText(aluno.getTelefoneCelular());
         campoEmail.setText(aluno.getEmail());
     }
 
     private void preencheAluno() {
         String nome = campoNome.getText().toString();
         String sobreNome = campoSobreNome.getText().toString();
-        String telefone = campoTelefone.getText().toString();
+        String telefoneFixo = campoTelefoneFixo.getText().toString();
+        String telefoneCelular = campoTelefoneCelular.getText().toString();
         String email = campoEmail.getText().toString();
 
         aluno.setNome(nome);
         aluno.setSobrenome(sobreNome);
-        aluno.setTelefone(telefone);
+//        aluno.setTelefoneFixo(telefoneFixo);
+//        aluno.setTelefoneCelular(telefoneCelular);
         aluno.setEmail(email);
     }
 

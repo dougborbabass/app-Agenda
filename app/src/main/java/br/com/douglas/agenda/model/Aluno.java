@@ -15,7 +15,6 @@ public class Aluno implements Serializable {
     private int id = 0;
     private String nome;
     private String sobrenome;
-    private String telefone;
     private String email;
     private Calendar momentoDeCadastro = Calendar.getInstance();
 
@@ -43,20 +42,12 @@ public class Aluno implements Serializable {
         this.sobrenome = sobrenome;
     }
 
-    public String getTelefone() {
-        return telefone;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
     }
 
     public void setEmail(String email) {
@@ -89,4 +80,6 @@ public class Aluno implements Serializable {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return sdf.format(momentoDeCadastro.getTime());
     }
+
+
 }
