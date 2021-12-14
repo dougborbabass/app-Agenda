@@ -1,7 +1,5 @@
 package br.com.douglas.agenda.ui.activity;
 
-import static br.com.douglas.agenda.ui.activity.ConstantesActivities.CHAVE_ALUNO;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,6 +9,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.List;
+
 import br.com.douglas.agenda.R;
 import br.com.douglas.agenda.database.AgendaDatabase;
 import br.com.douglas.agenda.database.dao.AlunoDAO;
@@ -18,6 +18,8 @@ import br.com.douglas.agenda.database.dao.TelefoneDAO;
 import br.com.douglas.agenda.model.Aluno;
 import br.com.douglas.agenda.model.Telefone;
 import br.com.douglas.agenda.model.TipoTelefone;
+
+import static br.com.douglas.agenda.ui.activity.ConstantesActivities.CHAVE_ALUNO;
 
 public class FormularioAlunoActivity extends AppCompatActivity {
 
@@ -32,6 +34,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     private Aluno aluno;
     private AlunoDAO alunoDAO;
     private TelefoneDAO telefoneDAO;
+    List<Telefone> telefonesDoAluno;
 
 
     @Override
@@ -56,7 +59,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.menu_salvar) {
+        if (item.getItemId() == R.id.menu_salvar) {
             finalizaFormulario();
         }
         return super.onOptionsItemSelected(item);
@@ -85,9 +88,18 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     private void preencheCampos() {
         campoNome.setText(aluno.getNome());
         campoSobreNome.setText(aluno.getSobrenome());
-//        campoTelefoneFixo.setText(aluno.getTelefoneFixo());
-//        campoTelefoneCelular.setText(aluno.getTelefoneCelular());
         campoEmail.setText(aluno.getEmail());
+        telefonesDoAluno = telefoneDAO
+                .buscaTodosTelefonesDoAluno(aluno.getId());
+
+        for (Telefone telefone :
+                telefonesDoAluno) {
+            if (telefone.getTipo() == TipoTelefone.FIXO) {
+                campoTelefoneFixo.setText(telefone.getNumero());
+            } else {
+                campoTelefoneCelular.setText(telefone.getNumero());
+            }
+        }
     }
 
     private void preencheAluno() {
@@ -108,6 +120,22 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         preencheAluno();
         if (aluno.temIdValido()) {
             alunoDAO.edita(aluno);
+
+            String numeroFixo = campoTelefoneFixo.getText().toString();
+            Telefone telefoneFixo = new Telefone(numeroFixo, TipoTelefone.FIXO, aluno.getId());
+
+            String numeroCelular = campoTelefoneCelular.getText().toString();
+            Telefone telefoneCelular = new Telefone(numeroCelular, TipoTelefone.CELULAR, aluno.getId());
+
+            for (Telefone telefone : telefonesDoAluno) {
+                if (telefone.getTipo() == TipoTelefone.FIXO) {
+                    telefoneFixo.setId(telefone.getId());
+                } else {
+                    telefoneCelular.setId(telefone.getId());
+                }
+            }
+
+            telefoneDAO.atualiza(telefoneFixo, telefoneCelular);
         } else {
             int alunoId = alunoDAO.salva(aluno).intValue();
 
