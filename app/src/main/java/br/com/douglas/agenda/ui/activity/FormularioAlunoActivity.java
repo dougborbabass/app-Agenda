@@ -36,7 +36,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
         AgendaDatabase database = AgendaDatabase.getInstance(this);
 
-        alunoDAO = database.getRoomAlunoDAO();
+        alunoDAO = database.getAlunoDAO();
 
         bindCampos();
         carregaInfosAluno();

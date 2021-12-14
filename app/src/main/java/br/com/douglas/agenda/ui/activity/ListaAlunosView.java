@@ -23,7 +23,7 @@ public class ListaAlunosView {
         this.adapter = new ListaAlunosAdapter(this.context);
         alunoDAO = AgendaDatabase
                 .getInstance(context)
-                .getRoomAlunoDAO();
+                .getAlunoDAO();
     }
 
     public void confirmaRemocao(final MenuItem item) {
