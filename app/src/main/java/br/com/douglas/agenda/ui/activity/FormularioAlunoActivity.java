@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.List;
 
 import br.com.douglas.agenda.R;
+import br.com.douglas.agenda.asynctask.SalvaAlunoTask;
 import br.com.douglas.agenda.database.AgendaDatabase;
 import br.com.douglas.agenda.database.dao.AlunoDAO;
 import br.com.douglas.agenda.database.dao.TelefoneDAO;
@@ -128,7 +129,6 @@ public class FormularioAlunoActivity extends AppCompatActivity {
             salvaAluno(telefoneFixo, telefoneCelular);
 
         }
-        finish();
     }
 
     private Telefone criaTelefone(EditText campoTelefoneFixo, TipoTelefone fixo) {
@@ -137,9 +137,7 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     }
 
     private void salvaAluno(Telefone telefoneFixo, Telefone telefoneCelular) {
-        int alunoId = alunoDAO.salva(aluno).intValue();
-        vinculaALunoComTelefone(alunoId, telefoneFixo, telefoneCelular);
-        telefoneDAO.salva(telefoneFixo, telefoneCelular);
+        new SalvaAlunoTask(alunoDAO, aluno, telefoneFixo, telefoneCelular, telefoneDAO, this::finish).execute();
     }
 
     private void editaAluno(Telefone telefoneFixo, Telefone telefoneCelular) {
@@ -163,6 +161,5 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         for (Telefone telefone : telefones) {
             telefone.setAlunoId(alunoId);
         }
-
     }
 }
