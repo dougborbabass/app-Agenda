@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.douglas.agenda.R;
-import br.com.douglas.agenda.asynctask.BuscaPrimeiroDoAlunoTask;
+import br.com.douglas.agenda.asynctask.BuscaPrimeiroTelefoneDoAlunoTask;
 import br.com.douglas.agenda.database.AgendaDatabase;
 import br.com.douglas.agenda.database.dao.TelefoneDAO;
 import br.com.douglas.agenda.model.Aluno;
@@ -55,9 +55,10 @@ public class ListaAlunosAdapter extends BaseAdapter {
     private void vincula(View view, Aluno aluno) {
         TextView nome = view.findViewById(R.id.item_aluno_nome);
         nome.setText(aluno.getNomeCompleto()); //+ " " + aluno.dataFormatada()
-        TextView telefone = view.findViewById(R.id.item_aluno_telefone);
+        TextView campoTelefone = view.findViewById(R.id.item_aluno_telefone);
 
-        new BuscaPrimeiroDoAlunoTask(telefoneDAO, telefone, aluno.getId()).execute();
+        new BuscaPrimeiroTelefoneDoAlunoTask(telefoneDAO, aluno.getId(), telefoneEncontrado ->
+                campoTelefone.setText(telefoneEncontrado.getNumero())).execute();
     }
 
     private View criaView(ViewGroup viewGroup) {

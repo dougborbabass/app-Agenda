@@ -6,16 +6,17 @@ import android.widget.TextView;
 import br.com.douglas.agenda.database.dao.TelefoneDAO;
 import br.com.douglas.agenda.model.Telefone;
 
-public class BuscaPrimeiroDoAlunoTask extends AsyncTask<Void, Void, Telefone> {
+public class BuscaPrimeiroTelefoneDoAlunoTask extends AsyncTask<Void, Void, Telefone> {
 
     private final TelefoneDAO dao;
-    private final TextView campoTelefone;
     private final int alunoId;
+    private final PrimeiroTelefoneEncontradoListener listener;
 
-    public BuscaPrimeiroDoAlunoTask(TelefoneDAO dao, TextView telefone, int alunoId) {
+    public BuscaPrimeiroTelefoneDoAlunoTask(TelefoneDAO dao, int alunoId,
+                                            PrimeiroTelefoneEncontradoListener listener) {
         this.dao = dao;
-        this.campoTelefone = telefone;
         this.alunoId = alunoId;
+        this.listener = listener;
     }
 
     @Override
@@ -26,6 +27,10 @@ public class BuscaPrimeiroDoAlunoTask extends AsyncTask<Void, Void, Telefone> {
     @Override
     protected void onPostExecute(Telefone primeiroTelefone) {
         super.onPostExecute(primeiroTelefone);
-        campoTelefone.setText(primeiroTelefone.getNumero());
+        listener.quandoEncontrado(primeiroTelefone);
+    }
+
+    public interface PrimeiroTelefoneEncontradoListener {
+        void quandoEncontrado(Telefone telefoneEncontrado);
     }
 }
