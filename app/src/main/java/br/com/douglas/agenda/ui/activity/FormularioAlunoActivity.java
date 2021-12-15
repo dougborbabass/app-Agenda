@@ -89,6 +89,10 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         campoNome.setText(aluno.getNome());
         campoSobreNome.setText(aluno.getSobrenome());
         campoEmail.setText(aluno.getEmail());
+        preencheCamposTelefone();
+    }
+
+    private void preencheCamposTelefone() {
         telefonesDoAluno = telefoneDAO
                 .buscaTodosTelefonesDoAluno(aluno.getId());
 
@@ -105,49 +109,60 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     private void preencheAluno() {
         String nome = campoNome.getText().toString();
         String sobreNome = campoSobreNome.getText().toString();
-        String telefoneFixo = campoTelefoneFixo.getText().toString();
-        String telefoneCelular = campoTelefoneCelular.getText().toString();
         String email = campoEmail.getText().toString();
 
         aluno.setNome(nome);
         aluno.setSobrenome(sobreNome);
-//        aluno.setTelefoneFixo(telefoneFixo);
-//        aluno.setTelefoneCelular(telefoneCelular);
         aluno.setEmail(email);
     }
 
     private void finalizaFormulario() {
         preencheAluno();
+
+        Telefone telefoneFixo = criaTelefone(campoTelefoneFixo, TipoTelefone.FIXO);
+        Telefone telefoneCelular = criaTelefone(campoTelefoneCelular, TipoTelefone.CELULAR);
+
         if (aluno.temIdValido()) {
-            alunoDAO.edita(aluno);
-
-            String numeroFixo = campoTelefoneFixo.getText().toString();
-            Telefone telefoneFixo = new Telefone(numeroFixo, TipoTelefone.FIXO, aluno.getId());
-
-            String numeroCelular = campoTelefoneCelular.getText().toString();
-            Telefone telefoneCelular = new Telefone(numeroCelular, TipoTelefone.CELULAR, aluno.getId());
-
-            for (Telefone telefone : telefonesDoAluno) {
-                if (telefone.getTipo() == TipoTelefone.FIXO) {
-                    telefoneFixo.setId(telefone.getId());
-                } else {
-                    telefoneCelular.setId(telefone.getId());
-                }
-            }
-
-            telefoneDAO.atualiza(telefoneFixo, telefoneCelular);
+            editaAluno(telefoneFixo, telefoneCelular);
         } else {
-            int alunoId = alunoDAO.salva(aluno).intValue();
-
-            String numeroFixo = campoTelefoneFixo.getText().toString();
-            Telefone telefoneFixo = new Telefone(numeroFixo, TipoTelefone.FIXO, alunoId);
-
-            String numeroCelular = campoTelefoneCelular.getText().toString();
-            Telefone telefoneCelular = new Telefone(numeroCelular, TipoTelefone.CELULAR, alunoId);
-
-            telefoneDAO.salva(telefoneFixo, telefoneCelular);
+            salvaAluno(telefoneFixo, telefoneCelular);
 
         }
         finish();
+    }
+
+    private Telefone criaTelefone(EditText campoTelefoneFixo, TipoTelefone fixo) {
+        String numeroFixo = campoTelefoneFixo.getText().toString();
+        return new Telefone(numeroFixo, fixo);
+    }
+
+    private void salvaAluno(Telefone telefoneFixo, Telefone telefoneCelular) {
+        int alunoId = alunoDAO.salva(aluno).intValue();
+        vinculaALunoComTelefone(alunoId, telefoneFixo, telefoneCelular);
+        telefoneDAO.salva(telefoneFixo, telefoneCelular);
+    }
+
+    private void editaAluno(Telefone telefoneFixo, Telefone telefoneCelular) {
+        alunoDAO.edita(aluno);
+        vinculaALunoComTelefone(aluno.getId(), telefoneFixo, telefoneCelular);
+        atualizaIdsDosTelefones(telefoneFixo, telefoneCelular);
+        telefoneDAO.atualiza(telefoneFixo, telefoneCelular);
+    }
+
+    private void atualizaIdsDosTelefones(Telefone telefoneFixo, Telefone telefoneCelular) {
+        for (Telefone telefone : telefonesDoAluno) {
+            if (telefone.getTipo() == TipoTelefone.FIXO) {
+                telefoneFixo.setId(telefone.getId());
+            } else {
+                telefoneCelular.setId(telefone.getId());
+            }
+        }
+    }
+
+    private void vinculaALunoComTelefone(int alunoId, Telefone... telefones) {
+        for (Telefone telefone : telefones) {
+            telefone.setAlunoId(alunoId);
+        }
+
     }
 }
